@@ -1,0 +1,10 @@
+sigma = simout.data(5001,:);
+det = sigma(1)*sigma(2)-l^2*sigma(3)^2;
+A = [0,0,1,0;
+    0,0,0,1;
+0,l*g*sigma(3)^2/det,-sigma(2)*sigma(4)/det,-l*sigma(3)*sigma(5)/det;
+0,g*sigma(1)*sigma(3)/det,-l*sigma(3)*sigma(4)/det,-sigma(1)*sigma(5)/det];
+B = [0;0;sigma(2)/det;l*sigma(3)/det];
+Q = diag([1,100,1,1/1]);
+r = 1;
+K = lqr(A,B,Q,r);

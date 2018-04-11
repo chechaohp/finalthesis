@@ -1,0 +1,1 @@
+sigma = simout.data(5001,:);
