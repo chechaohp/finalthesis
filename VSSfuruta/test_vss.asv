@@ -18,8 +18,8 @@ Params.nuy0 = [0;0;0;0;0];
 % VSS Params
 Params.c = 3;
 Params.k = 10;
-Params.shi = 100*eye(5);
-Params.a0 = [0;0;0;0;0];
+Params.shi = 100*eye(4);
+Params.a0 = [0;0;0;0];
 
 
 U = 0;
@@ -28,6 +28,7 @@ nuy = Params.nuy0;
 lambda = Params.lambda0;
 P = Params.P0;
 sigma = Params.sigma0;
+a = Params.a0;
 
 a_save = [];
 x_save = [];
@@ -42,27 +43,12 @@ K = [-0.2500 20.6329 -0.6179 2.5406];
 for IterIntv = 0:NumDataIntv-1
     clc;
     disp(IterIntv);
-    U = -K*x+ 0.2*sin(10*IterIntv*T);
-    %update lambda
-    lambda = lambda_update(lambda,Params);
-    %calculate filter
-    a = filter_low(x);
-    %calculate Phi
-    phi = Phi(a,Params);
-    %prediction error
-    epxilon = predict_error(U,phi,sigma);
-    %output error
-    e = output_error(lambda,phi,P,epxilon);
-    %adjust nuy
-    nuy = nuy_adjust(nuy,P,phi,e);
-    %update P
-    P = P_update(phi,P,lambda);
-    % update sigma
-    %sigma = sigma + nuy;
+    U = VSScontroller(x,a,Params)+0.1*sin(10*IterIntv*T);
     [t,x] = ode45(@(t,x) plant(x,U,Params),...
     [IterIntv, IterIntv+1]*T,...
     x);
-    s_save = [s_save;nuy'];
+
+    a_save = [a_save;a'];
     x_save = [x_save;x(end,:)];
     t_save = [t_save;t(end)];
     x = x(end,:)';
@@ -70,4 +56,4 @@ end
 figure();
 plot(t_save,x_save(:,1:2));
 figure();
-plot(t_save,s_save);
+plot(t_save,a_save);
