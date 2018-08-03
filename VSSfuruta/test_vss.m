@@ -39,11 +39,15 @@ T = 0.001;		% Time interval for data collection
 Iter = 0;
 NumDataIntv = 5000;
 %while norm(V_old-V) > denta 
-K = [-0.2500 20.6329 -0.6179 2.5406];
+%K = [-0.2500 20.6329 -0.6179 2.5406];
+K = [-3.1623  113.8474   -5.6464   10.6342];
 for IterIntv = 0:NumDataIntv-1
     clc;
-    disp(IterIntv);
-    a = a + a_update(x,Params)*T;
+    disp(IterIntv/NumDataIntv*100.0);
+    [t_d,a] = ode45(@(t,a) a_update(x,Params),...
+        [IterIntv, IterIntv+1]*T,...,
+        a);
+    a = a(end,:)';
     U = VSScontroller(x,a,Params);
     [t,x] = ode45(@(t,x) plant(x,U,Params),...
     [IterIntv, IterIntv+1]*T,...
@@ -52,6 +56,7 @@ for IterIntv = 0:NumDataIntv-1
     x_save = [x_save;x(end,:)];
     t_save = [t_save;t(end)];
     x = x(end,:)';
+    
 end
 figure();
 plot(t_save,x_save(:,1:2));

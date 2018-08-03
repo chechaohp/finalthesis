@@ -8,6 +8,9 @@ function output = find_K(nuy,Params)
         0,g*nuy(1)*nuy(3)/det,-l*nuy(3)*nuy(4)/det,-nuy(1)*nuy(5)/det];
     B = [0;0;nuy(2)/det;l*nuy(3)/det];
     Q = diag([10,100,25,50]);
+    %Q = diag([1,1,100,1]);
+    %Q = diag([1/16,1,1/4,1/16]);
     r = 1;
+    P = hariccati(
     output = lqr(A,B,Q,r);
 end

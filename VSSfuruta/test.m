@@ -15,14 +15,13 @@ Params.sigma0 = [0;0;0;0;0];
 Params.nuy0 = [0;0;0;0;0];
 
 U = 0;
-a = Params.a0;
 x = Params.x0;
 x_save = [];
 t_save = [];
 % 
 T = 0.001;		% Time interval for data collection
 Iter = 0;
-NumDataIntv = 10000;
+NumDataIntv = 5000;
 %while norm(V_old-V) > denta 
 K = [-3.1623   78.3643   -5.5454    8.4291];
 for IterIntv = 0:NumDataIntv-1
